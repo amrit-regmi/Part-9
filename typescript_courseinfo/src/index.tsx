@@ -4,8 +4,10 @@ import ReactDOM from "react-dom";
 type FC<P = {}> = FunctionComponent<P>;
 
 interface FunctionComponent<P = {}> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (props: PropsWithChildren<P>, context?: any): ReactElement | null;
   propTypes?: WeakValidationMap<P>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   contextTypes?: ValidationMap<any>;
   defaultProps?: Partial<P>;
   displayName?: string;
@@ -19,7 +21,7 @@ interface ContentProps {
   courseParts: Array<{
     name: string;
     exerciseCount: number;
-  }>
+  }>;
 }
 
 interface TotalProps {
