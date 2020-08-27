@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import {useParams} from 'react-router-dom';
-import { useStateValue } from "../state";
+import { useStateValue,setPatient } from "../state";
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { Icon } from 'semantic-ui-react';
@@ -11,8 +11,15 @@ const PatientPage: React.FC = () => {
   const [{ patient }, dispatch] = useStateValue();
 
   const setGenderIcon = (gender: string|undefined) => {
-    const icon = gender === "female" ? <Icon female name='venus' size='large'/> : <Icon male name='mars' size='large' />;
-    return icon;
+    switch (gender) {
+      case "male":
+        return <Icon male name='mars' size='large' />;
+      case "female":
+        return <Icon female name='venus' size='large'/>;
+      case "other":
+        return <Icon  name='mars stroke vertical' size='large'/>;
+
+    }
   };
 
   React.useEffect (() => {
@@ -21,7 +28,7 @@ const PatientPage: React.FC = () => {
     const getPatient = async () => {
       try{
         const response  =  await axios.get<Patient>(`${apiBaseUrl}/patients/${patientId}`);
-        dispatch({ type: "SET_PATIENT", payload: response.data });
+        dispatch(setPatient(response.data));
       }
       catch (e) {
         console.log(e);
