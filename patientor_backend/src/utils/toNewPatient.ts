@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -10,7 +11,9 @@ const toNewPatient = (object:any):NewPatientEntry => {
     dateOfBirth: parseDob(object.dateOfBirth),
     ssn: parseSsn(object.ssn),
     gender:parseGender(object.gender),
-    occupation:parseOccupation(object.occupation)
+    occupation:parseOccupation(object.occupation),
+    entries: object.entries
+    
   };
 };
 
@@ -52,6 +55,8 @@ const parseOccupation = (occupation:any):string => {
   return occupation;
   
 };
+
+
 
 const isString = (text:any): text is string => {
   return typeof text === 'string' || text instanceof String;

@@ -20,4 +20,19 @@ patientsRouter.post('/patients',(req,res) => {
   }
 });
 
+patientsRouter.get('/patients/:id',(req,res) => {
+  try {
+    const patient = patientService.getPatient(req.params.id);
+    if(patient){
+      res.json(patient);
+    }
+    else {
+      res.sendStatus(404);
+    }
+  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    res.status(400).send(e.message);
+  }
+});
+
 export default patientsRouter;

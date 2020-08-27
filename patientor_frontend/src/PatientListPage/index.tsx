@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { Container, Table, Button } from "semantic-ui-react";
-
+import {Link} from 'react-router-dom';
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
 import { Patient } from "../types";
@@ -40,6 +40,7 @@ const PatientListPage: React.FC = () => {
     <div className="App">
       <Container textAlign="center">
         <h3>Patient list</h3>
+        
       </Container>
       <Table celled>
         <Table.Header>
@@ -52,8 +53,9 @@ const PatientListPage: React.FC = () => {
         </Table.Header>
         <Table.Body>
           {Object.values(patients).map((patient: Patient) => (
-            <Table.Row key={patient.id}>
-              <Table.Cell>{patient.name}</Table.Cell>
+            
+            <Table.Row key={patient.id} >
+              <Table.Cell><Link to ={`/api/patients/${patient.id}`}> {patient.name}</Link></Table.Cell>
               <Table.Cell>{patient.gender}</Table.Cell>
               <Table.Cell>{patient.occupation}</Table.Cell>
               <Table.Cell>
