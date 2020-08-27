@@ -24,5 +24,6 @@ export type NewPatientEntry = Omit <Patient,'id'>;
 
 export enum Gender {
   Male = 'male', 
-  Female='female'
+  Female='female',
+  Other='other'
 }
