@@ -3,12 +3,13 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NewPatientEntry, Gender } from '../types';
+import {isString,isDate} from './genericTypeGuards';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const toNewPatient = (object:any):NewPatientEntry => {
   return {
     name: parseName(object.name),
-    dateOfBirth: parseDob(object.dateOfBirth),
+    dateOfBirth: parseDate(object.dateOfBirth),
     ssn: parseSsn(object.ssn),
     gender:parseGender(object.gender),
     occupation:parseOccupation(object.occupation),
@@ -24,9 +25,8 @@ const parseName = (name:any):string => {
  return name;
 };
 
-const parseDob = (dob:any):string => {
-  const regex = new RegExp(/^[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/);
-  if(!isString(dob) || !dob || !regex.test(dob) ){
+const parseDate = (dob:any):string => {
+  if(!isString(dob) || !dob || !isDate(dob) ){
     throw new Error(`Incorrect or missing date of birth: ${dob}`);
   }
   return dob;
@@ -54,12 +54,6 @@ const parseOccupation = (occupation:any):string => {
   }
   return occupation;
   
-};
-
-
-
-const isString = (text:any): text is string => {
-  return typeof text === 'string' || text instanceof String;
 };
 
 const isGender = (param: any): param is Gender => {

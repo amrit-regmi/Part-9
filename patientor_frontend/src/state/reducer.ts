@@ -1,5 +1,5 @@
 import { State } from "./state";
-import { Patient, Diagnosis } from "../types";
+import { Patient, Diagnosis, Entry } from "../types";
 
 export type Action =
   | {
@@ -19,12 +19,16 @@ export type Action =
       type: "SET_DIAGNOSIS_LIST";
       payload: Diagnosis[];
 
+    }
+  | {
+      type: "ADD_ENTRY";
+      payload: Entry;
     };
 
-export const setPatientList = (patient: Patient[]): Action  => {
+export const setPatientList = (patients: Patient[]): Action  => {
   return {
       type: "SET_PATIENT_LIST",
-      payload: patient
+      payload: patients
     };
   };
 
@@ -42,12 +46,19 @@ export const setPatient = (patient: Patient): Action  => {
     };
   };
 
-  export const setDiagnosisList = (diagnosis: Diagnosis[]): Action  => { 
-    return {
-      type: "SET_DIAGNOSIS_LIST",
-      payload: diagnosis
-    };
-    };
+export const setDiagnosisList = (diagnosis: Diagnosis[]): Action  => { 
+  return {
+    type: "SET_DIAGNOSIS_LIST",
+    payload: diagnosis
+  };
+  };
+
+export const addEntry = (entry: Entry): Action => {
+  return {
+    type: "ADD_ENTRY",
+    payload: entry
+  };
+};
   
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -75,15 +86,21 @@ export const reducer = (state: State, action: Action): State => {
           ...state,
           patient: {...action.payload }
         };
-        case "SET_DIAGNOSIS_LIST":
-          return {
-            ...state,
-            diagnosis: {
-              ...action.payload.reduce((memo,diagnosis) => ({...memo,[diagnosis.code]: diagnosis}),
-              {}
-              ) 
-            }
-          };
+      case "SET_DIAGNOSIS_LIST":
+        return {
+          ...state,
+          diagnosis: {
+            ...action.payload.reduce((memo,diagnosis) => ({...memo,[diagnosis.code]: diagnosis}),
+            {}
+            ) 
+          }
+        };
+      case "ADD_ENTRY":
+        return {
+          ...state,
+          patient: {...state.patient as Patient,entries: [...state.patient?.entries,action.payload]}
+  
+        };
     default:
       return state;
   }

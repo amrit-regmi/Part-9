@@ -1,15 +1,43 @@
 import React from "react";
 import axios from "axios";
 import {useParams} from 'react-router-dom';
-import { useStateValue,setPatient } from "../state";
+import { useStateValue,setPatient, addEntry } from "../state";
 import { Patient, Entry } from "../types";
 import { apiBaseUrl } from "../constants";
-import { Icon,List,Card} from 'semantic-ui-react';
-import { assert } from "console";
+import { Icon,List,Card, Button} from 'semantic-ui-react';
+import AddEntryModal from "../AddEntryModel";
+import { NewEntry } from "../AddEntryModel/AddEntryForm";
+
 
 const PatientPage: React.FC = () => {
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | undefined>();
   const patientId = useParams<{ id: string }>().id;
+
+  const openModal = (): void => setModalOpen(true);
   const [{ patient }, dispatch] = useStateValue();
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  const submitNewEntry = async (values: NewEntry) => {
+    try {
+      const { data: newEntry } = await axios.post<Entry>(
+        `${apiBaseUrl}/patients/${patientId}/entries`,
+        values
+      );
+      dispatch(addEntry(newEntry));
+      closeModal();
+    } catch (e) {
+      console.error(e.response.data);
+      setError(e.response.data.error);
+    }
+  };
+
+  
+  
 
   const setGenderIcon = (gender: string|undefined) => {
     switch (gender) {
@@ -22,6 +50,8 @@ const PatientPage: React.FC = () => {
 
     }
   };
+
+  
 
   React.useEffect (() => {
     if(patient && patient.id === patientId) return;
@@ -50,7 +80,18 @@ const PatientPage: React.FC = () => {
    <p>ssn: {patient?.ssn} <br/>
       occupation: {patient.occupation}
   </p>
-    <Entries entries={patient.entries}></Entries>
+  <Button type="submit"
+            color="green"
+            onClick={() => openModal()}> 
+            Add new Entry
+    </Button>
+    <Entries entries={patient.entries}></Entries> 
+    <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
     </>
   );
 };
@@ -77,10 +118,13 @@ const assertNever = (value: never): never => {
 };
 
 const Entries: React.FC<{entries: Entry[]}> = ({entries}) => {
+  
+
 
   return (
     <>
     <h4>Entries</h4>
+    
     {entries.map((entry,i) => {
       return (<EntryDetails entry={entry} key={i}></EntryDetails>);
       })}
