@@ -12,6 +12,10 @@ interface Props {
   onCancel: () => void;
 }
 
+const isDate =(date: string): boolean => {
+  const regex = new RegExp(/^[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/);
+  return regex.test(date);
+};
 export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
   const [{ diagnosis }] = useStateValue();
 
@@ -29,13 +33,18 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
       onSubmit={onSubmit}
       validate={values => {
         const requiredError = "Field is required";
+        const DateError = "Date is not on required format yyyy-mm-dd";
         const errors: { [field: string]: string } = {};
         if (!values.description ) {
           errors.description = requiredError;
         }
+
         if (!values.date) {
           errors.date = requiredError;
+        } else if(!isDate(values.date)){
+          errors.date= DateError;
         }
+
         if (!values.specialist) {
           errors.specialist = requiredError;
         }
@@ -48,18 +57,21 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
       {({ isValid, dirty,setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
+            
             <Field
               label="Description"
               placeholder="description"
               name="description"
               component={TextField}
             />
+            
             <Field
               label="Date"
               placeholder="dd-mm-yy"
               name="date"
               component={TextField}
             />
+            
             <Field
               label="Specialist"
               placeholder="specialist"
@@ -72,7 +84,7 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               setFieldTouched={setFieldTouched}
               diagnoses={Object.values(diagnosis)}
             /> 
-
+            
             <Field
               label="healthCheckRating"
               name="healthCheckRating"
