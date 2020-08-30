@@ -32,7 +32,7 @@ const PatientPage: React.FC = () => {
       closeModal();
     } catch (e) {
       console.error(e.response.data);
-      setError(e.response.data.error);
+      setError(e.response.data);
     }
   };
 
@@ -86,6 +86,7 @@ const PatientPage: React.FC = () => {
             Add new Entry
     </Button>
     <Entries entries={patient.entries}></Entries> 
+   
     <AddEntryModal
         modalOpen={modalOpen}
         onSubmit={submitNewEntry}
@@ -211,7 +212,7 @@ const EntryDetails: React.FC <{entry: Entry}> = ({entry}) => {
 
 
 
-/*const OccupationalHealthCare: React.FC<{entry: Entry}> =({entry}) =>{
+/*const OccupationalHealthcare: React.FC<{entry: Entry}> =({entry}) =>{
   
 };
 const HealthCheck: React.FC<{entry: Entry}> =({entry}) =>{

@@ -15,7 +15,7 @@ const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
     <Modal.Header>Add a new Entry</Modal.Header>
     <Modal.Content>
       {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
-      <AddEntryForm onSubmit={onSubmit} onCancel={onClose} />
+      <AddEntryForm onSubmit={onSubmit} onCancel={onClose}  />
     </Modal.Content>
   </Modal>
 );

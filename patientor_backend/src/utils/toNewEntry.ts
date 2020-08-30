@@ -28,7 +28,7 @@ const toNewEntry = (object:any):NewEntry => {
         discharge : parseDischarge(object.discharge),
         ...baseEntry
       };
-    case "OccupationalHealthCheck":
+    case "OccupationalHealthcare":
       return {
         type:"OccupationalHealthcare",
         employerName: parseStringField("employerName",object.employerName),

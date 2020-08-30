@@ -40,13 +40,13 @@ export  interface HealthCheckEntry extends BaseEntry {
   healthCheckRating: HealthCheckRating;
 }
 
-interface OccupationalHealthCareEntry extends BaseEntry{
+export interface OccupationalHealthcareEntry extends BaseEntry{
   type: "OccupationalHealthcare";
   employerName: string;
   sickLeave?: {"startDate": string; "endDate": string };
 }
 
-interface HospitalEntry extends BaseEntry {
+export interface HospitalEntry extends BaseEntry {
   type: "Hospital";
   discharge: {"date": string;"criteria": string};
 
@@ -54,5 +54,5 @@ interface HospitalEntry extends BaseEntry {
 
 export type Entry = 
   | HealthCheckEntry 
-  | OccupationalHealthCareEntry
+  | OccupationalHealthcareEntry
   | HospitalEntry;
